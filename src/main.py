@@ -2,19 +2,19 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 
-from env import env
+from env import Env
 from predict import predict
 Train_df = pd.read_csv('../data/training_data.csv', names = ["Open", "High", "Low", "Close"])
 Test_df = pd.read_csv('../data/testing_data.csv', names = ["Open", "High", "Low", "Close"])
-env = env(Train_df)
-predict = predict()
+env = Env(Train_df)
+# predict = predict()
 
 np.random.seed(2)
 tf.set_random_seed(2)  # reproducible
 
 # Superparameters
 OUTPUT_GRAPH = False
-MAX_EPISODE = 1
+MAX_EPISODE = 30
 DISPLAY_REWARD_THRESHOLD = 200  # renders environment if total episode reward is greater then this threshold
 MAX_EP_STEPS = 1000   # maximum time step in one episode
 RENDER = False  # rendering wastes time
@@ -113,8 +113,6 @@ class Critic(object):
                                           {self.s: s, self.v_: v_, self.r: r})
         return td_error
 
-
-
 sess = tf.Session()
 
 actor = Actor(sess, n_features=N_F, n_actions=N_A, lr=LR_A)
@@ -137,15 +135,7 @@ for i_episode in range(MAX_EPISODE):
 
         s_, r, done = env.step(t, s, a)
 
-        track_r.append(r)
-
-        td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
-        actor.learn(s, a, td_error)     # true_gradient = grad[logPi(s,a) * td_error]
-
-        s = s_
-        t += 1
-
-        if done:
+        if (done):
             ep_rs_sum = sum(track_r)
 
             if 'running_reward' not in globals():
@@ -154,5 +144,40 @@ for i_episode in range(MAX_EPISODE):
                 running_reward = running_reward * 0.95 + ep_rs_sum * 0.05
             print("episode:", i_episode, "  reward:", int(ep_rs_sum))
             break
+
+        else:
+            track_r.append(r)
+
+            td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
+            actor.learn(s, a, td_error)     # true_gradient = grad[logPi(s,a) * td_error]
+
+            s = s_
+            t += 1
+
+
+
+# Testing
+predict = Env(Test_df)
+s = np.array([0,0,0])
+t = 0
+track_r = []
+while True:
+    a = actor.choose_action(s)
+
+    s_, r, done = predict.step(t, s, a)
+
+    if done:
+        ep_rs_sum = sum(track_r)
+
+        if 'running_reward' not in globals():
+            running_reward = ep_rs_sum
+        else:
+            running_reward = running_reward * 0.95 + ep_rs_sum * 0.05
+        print("final - reward: ", int(ep_rs_sum))
+        break
+    else:
+        track_r.append(r)
+        s = s_
+        t += 1
 
 

@@ -36,7 +36,7 @@ MAX_MOVING_AVG_LEN = 10
 
 
 # s_, r, done
-class env:
+class Env:
   def __init__(self, data):
     self.data = data
 

@@ -44,33 +44,6 @@ for row in range(len(test_df['Open'])):
 
 
 
-# # Testing
-# env = env(Test_df)
-# s = np.array([0,0,0])
-# t = 0
-# track_r = []
-# while True:
-#     a = actor.choose_action(s)
-
-#     s_, r, done = env.step(t, s, a)
-
-#     track_r.append(r)
-
-#     td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
-#     actor.learn(s, a, td_error)     # true_gradient = grad[logPi(s,a) * td_error]
-
-#     s = s_
-#     t += 1
-
-#     if done:
-#         ep_rs_sum = sum(track_r)
-
-#         if 'running_reward' not in globals():
-#             running_reward = ep_rs_sum
-#         else:
-#             running_reward = running_reward * 0.95 + ep_rs_sum * 0.05
-#         print("episode:", i_episode, "  reward:", int(ep_rs_sum))
-#         break
 
 
 
