@@ -36,7 +36,7 @@ class predict:
     _moving_avg = self._cal_moving_avg(day)
     _avg_diff = _moving_avg - state[0]
     _avg_change_trend = self._cal_avg_change_trend(_avg_diff)
-    
+
     _state = [_moving_avg, _avg_diff, _avg_change_trend]
     return np.array(_state)
 

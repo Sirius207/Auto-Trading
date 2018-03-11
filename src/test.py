@@ -9,7 +9,7 @@ from rl import (Actor, Critic)
 
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.01     # learning rate for critic
-MAX_EPISODE = 30
+MAX_EPISODE = 25
 N_F = 3 # mean & curve & block
 N_A = 5 # 0, 1, 2, 3, 4
 
