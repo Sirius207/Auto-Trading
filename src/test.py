@@ -91,9 +91,11 @@ for day in range(len(Test_df['Open'])):
     if(np.absolute(trend - s[2]) == 0):
         correct += 1
     elif(np.absolute(trend - s[2]) == 1):
+        print("1 -- predict: ", trend - 2, " real: ", s[2] - 2)
         error_1 += 1
     else:
-        error_2 += 2
+        print("2 -- predict: ", trend - 2, " real: ", s[2] - 2)
+        error_2 += 1
 
 print("correct: ", correct)
 print("error_1: ", error_1)

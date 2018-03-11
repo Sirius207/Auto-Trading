@@ -19,7 +19,7 @@ class Env:
     return (total / MAX_MOVING_AVG_LEN) - self.data['Open'][0]
 
   def _cal_avg_change_trend(self, _avg_diff):
-    if (_avg_diff > 0.4):
+    if (_avg_diff > 0.3):
       _avg_change_period = 3
     elif(_avg_diff > 1.5):
       _avg_change_period = 4
