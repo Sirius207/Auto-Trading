@@ -32,7 +32,7 @@ class predict:
       _avg_change_period = 2
     return _avg_change_period
 
-  def get_new_state(self, day, state, action):
+  def get_new_state(self, day, state):
     _moving_avg = self._cal_moving_avg(day)
     _avg_diff = _moving_avg - state[0]
     _avg_change_trend = self._cal_avg_change_trend(_avg_diff)
@@ -43,7 +43,7 @@ class predict:
 
   def action(self, hold, trend):
     if(hold == 0):
-      if(trend > 0):
+      if(trend > 1):
         action = 1
       else:
         action = -1
@@ -57,7 +57,7 @@ class predict:
         action = 0
       else:
         action = 1
-
+    print(hold, " - ", "trend: ", (trend - 2), "action: ", action)
     return action
 
   def check_money(self, hold, action, money, price):

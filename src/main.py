@@ -175,10 +175,10 @@ for day in range(len(Test_df['Open'])):
 
     # Check money after day 0 (day start from 0)
     if(day > 0):
-        print("day: ", day, "state: ", s, " today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
+        print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
         money, hold = predict.check_money(hold, action, money, price)
 
-    s = predict.get_new_state(day, s, trend)
+    s = predict.get_new_state(day, s)
 
     if(day + 1 == len(Test_df['Open'])):
         if (hold == 1):
