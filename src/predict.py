@@ -57,7 +57,6 @@ class predict:
         action = 0
       else:
         action = 1
-    print(hold, " - ", "trend: ", (trend - 2), "action: ", action)
     return action
 
   def check_money(self, hold, action, money, price):
