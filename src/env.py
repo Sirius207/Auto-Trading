@@ -31,7 +31,7 @@ class Env:
       _avg_change_period = 2
     return _avg_change_period
 
-  def _get_new_state(self, day, state, action):
+  def _get_new_state(self, day, state):
     _moving_avg = self._cal_moving_avg(day)
     _avg_diff = _moving_avg - state[0]
     _avg_change_trend = self._cal_avg_change_trend(_avg_diff)
@@ -59,7 +59,7 @@ class Env:
       reword = 0
     else:
       done = False
-      _state = self._get_new_state(day, state, action)
+      _state = self._get_new_state(day, state)
       reword = self._get_new_reword(day, state, action, _state)
     
     return (_state, reword, done)
