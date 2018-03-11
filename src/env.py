@@ -2,39 +2,6 @@ import numpy as np
 
 MAX_MOVING_AVG_LEN = 10
 
-
-# class policy:
-#     def _get_hold_type(self, hold_state, action):
-#     _hold_state = hold_state + action
-#     if (_hold_state > 1 || _hold_state < -1):
-#       raise ValueError('action wrong') 
-#     else:
-#       return _hold_state
-
-#   def _get_hold_price(self, hold_state, action, day):
-#     if (action == 1):
-#       if(hold_state[0] == 0):
-#          _hold_price = -self.data['Open'][day+1]
-#       elif(hold_state[0] == -1):
-#         _hold_price = 0
-#       else:
-#         raise ValueError('action wrong') 
-
-#     elif (action == -1):
-#       if(hold_state[0] == 1):
-#         _hold_price = 0
-#       elif(hold_state[0] == 0):
-#         _hold_price = self.data['Open'][day+1]
-#       else:
-#         raise ValueError('action wrong')
-
-#     else:
-#       _hold_price = hold_state[1]
-
-#     return _hold_price
-
-
-
 # s_, r, done
 class Env:
   def __init__(self, data):
@@ -77,8 +44,10 @@ class Env:
       reward = -50
     elif (action == _state[2]):
       reward = 20
+    elif (action == 0):
+      reward = -30
     else:
-      reward = 0
+      reward = -10
 
     return reward
 

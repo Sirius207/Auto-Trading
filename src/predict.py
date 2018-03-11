@@ -6,18 +6,18 @@ class predict:
   def __init__(self):
     self.data = []
   
-  def push_data(price):
+  def push_data(self, price):
     self.data.append(price)
   
   def _cal_moving_avg(self, day):
     total = 0
     for index in range(MAX_MOVING_AVG_LEN):
       if ((day - index) < 0):
-        total += self.data['Open'][0]
+        total += self.data[0]
       else:
-        total += self.data['Open'][day-index]
+        total += self.data[day-index]
     
-    return (total / MAX_MOVING_AVG_LEN) - self.data['Open'][0]
+    return (total / MAX_MOVING_AVG_LEN) - self.data[0]
 
   def _cal_avg_change_trend(self, _avg_diff):
     if (_avg_diff > 1):
@@ -39,3 +39,40 @@ class predict:
     
     _state = [_moving_avg, _avg_diff, _avg_change_trend]
     return np.array(_state)
+
+
+  def action(self, hold, trend):
+    if(hold == 0):
+      if(trend > 0):
+        action = 1
+      else:
+        action = -1
+    elif(hold == 1):
+      if(trend > 1):
+        action = 0
+      else:
+        action = -1
+    else:
+      if(trend < 3):
+        action = 0
+      else:
+        action = 1
+
+    return action
+
+  def check_money(self, hold, action, money, price):
+    if (action == 1):
+      money -= price
+      if (hold == 0):
+        hold = 1
+      else:
+        hold = 0
+
+    elif (action == -1):
+      money += price
+      if (hold == 0):
+        hold = -1
+      else:
+        hold = 0
+
+    return (money, hold)

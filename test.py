@@ -39,19 +39,23 @@ test_df = pd.read_csv('./data/testing_data.csv', names = ["Open", "High", "Low",
 #   print(day," -- ",train_df['Open'][day], ": ", diff ," = ", _moving_avg, " - ", moving_avg)
 #   moving_avg = _moving_avg
 
-for row in range(len(test_df['Open'])):
-    print(test_df['Open'][row])
 
+# Testing
+predict = Env(Test_df)
+s = np.array([0,0,0])
+t = 0
+track_r = []
+while True:
+    a = actor.choose_action(s)
 
+    s_, r, done = predict.step(t, s, a)
 
-
-
-
-
-# s = np.array([0,0,0])
-# for day in range(len(Test_df['Open'])):
-#     new_price = Test_df['Open'][day]
-#     predict.push_data(price)
-#     a = actor.choose_action(s)
-#     s = predict.get_new_state(day, s, a)
+    if done:
+        ep_rs_sum = sum(track_r)
+        print("final - reward: ", int(ep_rs_sum))
+        break
+    else:
+        track_r.append(r)
+        s = s_
+        t += 1
 

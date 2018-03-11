@@ -7,7 +7,7 @@ from predict import predict
 Train_df = pd.read_csv('../data/training_data.csv', names = ["Open", "High", "Low", "Close"])
 Test_df = pd.read_csv('../data/testing_data.csv', names = ["Open", "High", "Low", "Close"])
 env = Env(Train_df)
-# predict = predict()
+predict = predict()
 
 np.random.seed(2)
 tf.set_random_seed(2)  # reproducible
@@ -137,11 +137,6 @@ for i_episode in range(MAX_EPISODE):
 
         if (done):
             ep_rs_sum = sum(track_r)
-
-            if 'running_reward' not in globals():
-                running_reward = ep_rs_sum
-            else:
-                running_reward = running_reward * 0.95 + ep_rs_sum * 0.05
             print("episode:", i_episode, "  reward:", int(ep_rs_sum))
             break
 
@@ -155,29 +150,51 @@ for i_episode in range(MAX_EPISODE):
             t += 1
 
 
-
-# Testing
-predict = Env(Test_df)
 s = np.array([0,0,0])
-t = 0
-track_r = []
-while True:
-    a = actor.choose_action(s)
 
-    s_, r, done = predict.step(t, s, a)
+error = 0
+correct = 0
+error_1 = 0
+error_2 = 0
 
-    if done:
-        ep_rs_sum = sum(track_r)
+# user state
+hold = 0
+money = 0
 
-        if 'running_reward' not in globals():
-            running_reward = ep_rs_sum
-        else:
-            running_reward = running_reward * 0.95 + ep_rs_sum * 0.05
-        print("final - reward: ", int(ep_rs_sum))
-        break
+for day in range(len(Test_df['Open'])):
+    # Predict Trend
+    trend = actor.choose_action(s)
+
+    # Buy or Sold
+    action = predict.action(hold, trend)
+    #
+    # New Day
+    #
+    price = Test_df['Open'][day]
+    predict.push_data(price)
+
+    # Check money after day 0 (day start from 0)
+    if(day > 0):
+        print("day: ", day, "state: ", s, " today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
+        money, hold = predict.check_money(hold, action, money, price)
+
+    s = predict.get_new_state(day, s, trend)
+
+    if(day + 1 == len(Test_df['Open'])):
+        if (hold == 1):
+            money += Test_df['Close'][day]
+        elif (hold == -1):
+            money -= Test_df['Close'][day]
+        print("final money: ", money)
+
+    # error check    
+    if(np.absolute(trend - s[2]) == 0):
+        correct += 1
+    elif(np.absolute(trend - s[2]) == 1):
+        error_1 += 1
     else:
-        track_r.append(r)
-        s = s_
-        t += 1
+        error_2 += 2
 
-
+print("correct: ", correct)
+print("error_1: ", error_1)
+print("error_2: ", error_2)
