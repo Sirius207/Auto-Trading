@@ -74,8 +74,8 @@ for day in range(len(Test_df['Open'])):
     predict.push_data(price)
 
     # Check money after day 0 (day start from 0)
+    print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
     if(day > 0):
-        print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
         money, hold = predict.check_money(hold, action, money, price)
 
     s = predict.get_new_state(day, s)

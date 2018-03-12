@@ -21,8 +21,6 @@ class Env:
   def _cal_avg_change_trend(self, _avg_diff):
     if (_avg_diff > 0.3):
       _avg_change_period = 3
-    elif(_avg_diff > 1.5):
-      _avg_change_period = 4
     elif(_avg_diff < -1.5):
       _avg_change_period = 0
     elif(_avg_diff < -0.4):
@@ -44,8 +42,6 @@ class Env:
       reward = -100
     elif (action == _state[2]):
       reward = 20
-    elif (action == 0):
-      reward = -50
     else:
       reward = -10
 

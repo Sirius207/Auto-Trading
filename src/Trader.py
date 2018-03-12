@@ -9,7 +9,7 @@ from rl import (Actor, Critic)
 
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.01     # learning rate for critic
-MAX_EPISODE = 1
+MAX_EPISODE = 25
 N_F = 3         # mean & curve & block
 N_A = 5         # 0, 1, 2, 3, 4
 
@@ -35,7 +35,6 @@ if __name__ == '__main__':
     # Training
     #
     env = Env(Train_df)
-    predict = predict()
     sess = tf.Session()
 
     actor = Actor(sess, n_features=N_F, n_actions=N_A, lr=LR_A)
@@ -70,10 +69,12 @@ if __name__ == '__main__':
     # Testing
     #
     Test_df = pd.read_csv('../data/testing_data.csv', names = ["Open", "High", "Low", "Close"])
+    predict = predict()
 
     # Initial State
     s = np.array([0,0,0])
     hold = 0
+    money = 0
 
     with open(args.output, 'w') as output_file:
         for day in range(len(Test_df['Open'])):
@@ -82,14 +83,18 @@ if __name__ == '__main__':
 
             # Action Type
             action = predict.action(hold, trend)
-            # Last day should not output action
-            if (day + 1 != len(Test_df['Open'])):
-                output_file.write(str(action) + "\n")
+            print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
 
             #
             # New Day
             #
             price = Test_df['Open'][day]
+            if (day > 0):
+                money, hold = predict.check_money(hold, action, money, price)
+
+            # Last day should not output action
+            if (day + 1 != len(Test_df['Open'])):
+                output_file.write(str(action) + "\n")
 
             # Change State
             predict.push_data(price)
