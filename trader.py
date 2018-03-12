@@ -69,7 +69,8 @@ if __name__ == '__main__':
     # Testing
     #
     Test_df = pd.read_csv(args.testing, names = ["Open", "High", "Low", "Close"])
-    predict = predict()
+    trend_block = env.get_trend_block()
+    predict = predict(trend_block)
 
     # Initial State
     s = np.array([0,0,0])

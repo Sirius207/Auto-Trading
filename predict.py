@@ -3,8 +3,9 @@ import numpy as np
 MAX_MOVING_AVG_LEN = 10
 
 class predict:
-  def __init__(self):
+  def __init__(self, trend_block):
     self.data = []
+    self.trend_block = trend_block
   
   def push_data(self, price):
     self.data.append(price)
@@ -20,11 +21,11 @@ class predict:
     return (total / MAX_MOVING_AVG_LEN) - self.data[0]
 
   def _cal_avg_change_trend(self, _avg_diff):
-    if (_avg_diff > 0.3):
+    if (_avg_diff > self.trend_block[0]):
       _avg_change_period = 3
-    elif(_avg_diff < -1.5):
+    elif(_avg_diff < self.trend_block[1]):
       _avg_change_period = 0
-    elif(_avg_diff < -0.4):
+    elif(_avg_diff < self.trend_block[2]):
       _avg_change_period = 1
     else:
       _avg_change_period = 2

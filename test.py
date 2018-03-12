@@ -16,7 +16,6 @@ N_A = 5 # 0, 1, 2, 3, 4
 Train_df = pd.read_csv('./data/google/training_data.csv', names = ["Open", "High", "Low", "Close"])
 Test_df = pd.read_csv('./data/google/testing_data.csv', names = ["Open", "High", "Low", "Close"])
 env = Env(Train_df)
-predict = predict()
 
 sess = tf.Session()
 
@@ -58,6 +57,8 @@ error_1 = 0
 error_2 = 0
 
 # user state
+trend_block = env.get_trend_block()
+predict = predict(trend_block)
 hold = 0
 money = 0
 

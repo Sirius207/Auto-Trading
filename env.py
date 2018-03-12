@@ -6,8 +6,44 @@ MAX_MOVING_AVG_LEN = 10
 class Env:
   def __init__(self, data):
     self.data = data
+    self.moving_avg = []
+    self.moving_avg_diff = self._cal_diff_range()
+    self.mean_diff = self._cal_mean_diff(self.moving_avg_diff)
+    self.mean_square_error = self._cal_mean_square_error(self.mean_diff, self.moving_avg_diff)
+    
+    self.trend_block = [
+      (self.mean_square_error/4 - self.mean_diff),
+      (-self.mean_square_error) ,
+      (-self.mean_square_error/4)
+    ]
 
+  def get_trend_block(self):
+    return self.trend_block
 
+  def _cal_mean_diff(self, moving_avg_diff):
+    data_len = len(moving_avg_diff)
+    mean_diff = sum(moving_avg_diff) / data_len
+    return mean_diff
+
+  def _cal_mean_square_error(self, mean_diff, moving_avg_diff):
+    data_len = len(moving_avg_diff)
+    total_error = 0
+    for day in range(data_len):
+      total_error += (moving_avg_diff[day] - mean_diff)**2
+
+    mean_square_error = (total_error / data_len)**0.5
+
+    return mean_square_error
+
+  def _cal_diff_range(self):
+    moving_avg_diff = [0]
+    for day in range(len(self.data['Open'])):
+      moving_avg = self._cal_moving_avg(day)
+      self.moving_avg.append(moving_avg)
+      if (day > 0):
+        moving_avg_diff.append(self.moving_avg[day] - self.moving_avg[day - 1])
+    return moving_avg_diff
+  
   def _cal_moving_avg(self, day):
     total = 0
     for index in range(MAX_MOVING_AVG_LEN):
@@ -19,11 +55,11 @@ class Env:
     return (total / MAX_MOVING_AVG_LEN) - self.data['Open'][0]
 
   def _cal_avg_change_trend(self, _avg_diff):
-    if (_avg_diff > 0.3):
+    if (_avg_diff > self.trend_block[0]):
       _avg_change_period = 3
-    elif(_avg_diff < -1.5):
+    elif(_avg_diff < self.trend_block[1]):
       _avg_change_period = 0
-    elif(_avg_diff < -0.4):
+    elif(_avg_diff < self.trend_block[2]):
       _avg_change_period = 1
     else:
       _avg_change_period = 2
