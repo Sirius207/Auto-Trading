@@ -83,18 +83,16 @@ if __name__ == '__main__':
 
             # Action Type
             action = predict.action(hold, trend)
-            print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
 
             #
             # New Day
             #
+            print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
             price = Test_df['Open'][day]
             if (day > 0):
-                money, hold = predict.check_money(hold, action, money, price)
-
-            # Last day should not output action
-            if (day + 1 != len(Test_df['Open'])):
                 output_file.write(str(action) + "\n")
+                money, hold = predict.check_money(hold, action, money, price)
+                
 
             # Change State
             predict.push_data(price)
