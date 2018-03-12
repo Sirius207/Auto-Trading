@@ -29,7 +29,7 @@ if __name__ == '__main__':
                         help='output file name')
     args = parser.parse_args()
 
-    Train_df = pd.read_csv('../data/training_data.csv', names = ["Open", "High", "Low", "Close"])
+    Train_df = pd.read_csv(args.training, names = ["Open", "High", "Low", "Close"])
 
     #
     # Training
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     #
     # Testing
     #
-    Test_df = pd.read_csv('../data/testing_data.csv', names = ["Open", "High", "Low", "Close"])
+    Test_df = pd.read_csv(args.testing, names = ["Open", "High", "Low", "Close"])
     predict = predict()
 
     # Initial State
@@ -87,9 +87,9 @@ if __name__ == '__main__':
             #
             # New Day
             #
-            print("day: ", day, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
             price = Test_df['Open'][day]
             if (day > 0):
+                print("day: ", day - 1, "state: ", s, " ------ today: ", (s[2] - 2) ,"predict tomorrow: ", (trend - 2) , " ------- hold: ", hold, " action: ", action, "money: ", money)
                 output_file.write(str(action) + "\n")
                 money, hold = predict.check_money(hold, action, money, price)
                 
