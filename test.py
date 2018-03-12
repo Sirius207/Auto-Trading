@@ -9,12 +9,12 @@ from rl import (Actor, Critic)
 
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.01     # learning rate for critic
-MAX_EPISODE = 25
+MAX_EPISODE = 40
 N_F = 3 # mean & curve & block
 N_A = 5 # 0, 1, 2, 3, 4
 
-Train_df = pd.read_csv('./data/google/training_data.csv', names = ["Open", "High", "Low", "Close"])
-Test_df = pd.read_csv('./data/google/testing_data.csv', names = ["Open", "High", "Low", "Close"])
+Train_df = pd.read_csv('./data/fb/FB.csv', names = ["day", "Open", "High", "Low", "Close", "a", "v"])
+Test_df = pd.read_csv('./data/fb/test.csv', names = ["day","Open", "High", "Low", "Close", "a", "v"])
 env = Env(Train_df)
 
 sess = tf.Session()
