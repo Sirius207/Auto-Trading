@@ -13,8 +13,8 @@ MAX_EPISODE = 25
 N_F = 3 # mean & curve & block
 N_A = 5 # 0, 1, 2, 3, 4
 
-Train_df = pd.read_csv('./data/amazon/AMZN.csv', names = ["day","Open", "High", "Low", "Close", "a", "v"])
-Test_df = pd.read_csv('./data/amazon/test.csv', names = ["day","Open", "High", "Low", "Close", "a", "v"])
+Train_df = pd.read_csv('./data/google/training_data.csv', names = ["Open", "High", "Low", "Close"])
+Test_df = pd.read_csv('./data/google/testing_data.csv', names = ["Open", "High", "Low", "Close"])
 env = Env(Train_df)
 predict = predict()
 
