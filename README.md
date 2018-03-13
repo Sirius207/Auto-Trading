@@ -12,9 +12,14 @@ python trader.py --training training_data.csv --testing testing_data.csv --outpu
 
 ## Strategy
 
-Use [Actor Critic  Algorithms](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf) ([Source](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/6-1-actor-critic/)) to predict stock trend of tomorrow, and use simple judge policy to do action.
+Use [Actor Critic  Algorithms](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf) ([Source](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/6-1-actor-critic/)) to predict stock trend of tomorrow, and use simple judge policy to do action according to the predict trend.
 
-Predict Trend
+State of Actor Critic
+- Moving average (10 days)
+- Difference of today moving average & yesterday moving average
+- Magnitude of difference of moving average
+
+Predict Trend (Action of Actor Critic)
 - 0: fall
 - 1: decline
 - 2: flat
