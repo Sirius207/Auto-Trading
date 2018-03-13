@@ -19,7 +19,10 @@ Use [Actor Critic  Algorithms](http://rll.berkeley.edu/deeprlcourse/f17docs/lect
 - Difference of today moving average & yesterday moving average
 - Magnitude of difference of moving average: [0,1,2,3]  (means fall, decline, flat, rise)
 
-### Predict Trend (As Action of Actor Critic) (Should equal to the Magnitude of difference of moving average tomorrow)
+### Predict Trend 
+(As Action of Actor Critic) 
+(Should equal to the Magnitude of difference of moving average tomorrow)
+Value
 - 0: fall
 - 1: decline
 - 2: flat
