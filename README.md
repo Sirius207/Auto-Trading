@@ -10,13 +10,44 @@ python trader.py --training training_data.csv --testing testing_data.csv --outpu
 ```
 
 
-## Predict Algorithm
+## Strategy
 
+Use [Actor Critic  Algorithms](http://rll.berkeley.edu/deeprlcourse/f17docs/lecture_5_actor_critic_pdf.pdf) ([Source](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/6-1-actor-critic/)) to predict stock trend of tomorrow, and use simple judge policy to do action.
 
+Predict Trend
+- 0: fall
+- 1: decline
+- 2: flat
+- 3: rise
 
-## Stock Policy
+Hold State
+- -1: short 1 stock
+- 0: no stock
+- 1: hold 1 stock
 
+Action
+- 1: buy
+- 0: no action
+- -1: sold (or short)
 
+Policy
+```
+if(hold == 0):
+  if(trend_of_tomorrow > 1):
+    action = 1
+  else:
+    action = -1
+elif(hold == 1):
+  if(trend_of_tomorrow > 1):
+    action = 0
+  else:
+    action = -1
+else:
+  if(trend_of_tomorrow < 3):
+    action = 0
+  else:
+    action = 1
+```
 
 ---
 
@@ -42,10 +73,8 @@ In the final day, if you hold/short the stock, we will force your slot empty as 
 
 ## Input Sample:
 
-training data:
-https://www.dropbox.com/s/2lzkd5oj6pm6zk9/training_data.csv?dl=0
-testing data:
-https://www.dropbox.com/s/0p6mx922eafy6tm/testing_data.csv?dl=0
+- training data: https://www.dropbox.com/s/2lzkd5oj6pm6zk9/training_data.csv?dl=0
+- testing data: https://www.dropbox.com/s/0p6mx922eafy6tm/testing_data.csv?dl=0
 
 
 ## Output Sample:
